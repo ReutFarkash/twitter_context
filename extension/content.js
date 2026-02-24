@@ -89,4 +89,33 @@ setInterval(() => {
       group.appendChild(btn);
     }
   });
+
+  const names = document.querySelectorAll(SELECTORS.userName);
+  names.forEach(nameBlock => {
+    if (!nameBlock.querySelector('.person-badge')) {
+      const handleBlock = nameBlock.innerText.split('\n')[1];
+      if (handleBlock) {
+        const handle = handleBlock.replace('@', '');
+        chrome.runtime.sendMessage({ action: "checkHandle", handle: handle }, (res) => {
+          if (res && res.exists && !nameBlock.querySelector('.person-badge')) {
+            const badge = document.createElement('span');
+            badge.classList.add('person-badge');
+            
+            // Map categories to emojis
+            const emojiMap = {
+              'Team': '🟢',
+              'Red-Flag': '🔴',
+              'Neutral': '🟡'
+            };
+            badge.innerText = ` ${emojiMap[res.category] || '🟡'}`;
+            badge.title = `Context Saved: ${res.category}`;
+            
+            // Twitter's name block is often nested, find the actual display name span
+            const nameEl = nameBlock.querySelector('span');
+            if (nameEl) nameEl.appendChild(badge);
+          }
+        });
+      }
+    }
+  });
 }, 2000);

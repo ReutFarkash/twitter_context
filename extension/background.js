@@ -14,6 +14,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ success: false, error: err.message });
     });
     
-    return true; // Keep channel open for async response
+    return true; 
+  }
+
+  if (request.action === "checkHandle") {
+    fetch(`http://localhost:3000/check/${request.handle}`)
+    .then(res => res.json())
+    .then(res => sendResponse(res))
+    .catch(err => {
+      console.error("Background Check Error:", err);
+      sendResponse({ exists: false, error: err.message });
+    });
+    return true;
   }
 });

@@ -21,6 +21,22 @@ app.get('/', (req, res) => {
   res.send('Twitter Context Bridge is RUNNING. Send POST requests to /save');
 });
 
+app.get('/check/:handle', (req, res) => {
+  const handle = req.params.handle.replace('@', '');
+  const filePath = path.join(VAULT_PATH, `${handle}.md`);
+  
+  if (fs.existsSync(filePath)) {
+    const content = fs.readFileSync(filePath, 'utf8');
+    // Simple regex to find category in YAML
+    const categoryMatch = content.match(/category:\s*(\w+)/);
+    const category = categoryMatch ? categoryMatch[1] : 'Neutral';
+    
+    res.json({ exists: true, category });
+  } else {
+    res.json({ exists: false });
+  }
+});
+
 app.post('/save', (appRequest, appResponse) => {
   try {
     const data = appRequest.body;
