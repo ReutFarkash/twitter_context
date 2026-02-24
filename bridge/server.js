@@ -11,39 +11,68 @@ const VAULT_PATH = '/Users/reut/Code/assistant/data_vault/03/Twitter_Context';
 app.use(cors());
 app.use(bodyParser.json());
 
+// Log all requests
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
+
+app.get('/', (req, res) => {
+  res.send('Twitter Context Bridge is RUNNING. Send POST requests to /save');
+});
+
 app.post('/save', (appRequest, appResponse) => {
-  const data = appRequest.body;
-  const filename = `${data.handle.replace('@', '')}.md`;
-  const filePath = path.join(VAULT_PATH, filename);
-  
-  const content = `---
+  try {
+    const data = appRequest.body;
+    console.log("Saving context for:", data.displayName, data.handle);
+    
+    if (!data.handle) {
+      throw new Error("Missing user handle in request body.");
+    }
+    
+    // Ensure the vault directory exists
+    if (!fs.existsSync(VAULT_PATH)) {
+      fs.mkdirSync(VAULT_PATH, { recursive: true });
+    }
+
+    const filename = `${data.handle.replace('@', '')}.md`;
+    const filePath = path.join(VAULT_PATH, filename);
+    const dateStr = data.timestamp.split('T')[0];
+    
+    const content = `---
 display_name: ${data.displayName}
 twitter_handle: ${data.handle}
 category: Neutral
 tags:
   - twitter-context
-date_created: ${data.timestamp.split('T')[0]}
+date_created: ${dateStr}
 ---
 
 # ${data.displayName} (${data.handle})
 
 ## 📋 Context Timeline
-- [date:: [[${data.timestamp.split('T')[0]}]]] [event:: Captured Tweet] [link:: ${data.url}] #twitter-context
+- [date:: [[${dateStr}]]] [event:: Captured Tweet] [link:: ${data.url}] #twitter-context
   > ${data.text.replace(/\n/g, '\n  > ')}
 
 `;
 
-  if (fs.existsSync(filePath)) {
-    // Append to existing file
-    const appendContent = `- [date:: [[${data.timestamp.split('T')[0]}]]] [event:: Captured Tweet] [link:: ${data.url}] #twitter-context
+    if (fs.existsSync(filePath)) {
+      // Append to existing file
+      const appendContent = `- [date:: [[${dateStr}]]] [event:: Captured Tweet] [link:: ${data.url}] #twitter-context
   > ${data.text.replace(/\n/g, '\n  > ')}\n`;
-    
-    fs.appendFileSync(filePath, appendContent);
-    appResponse.json({ status: 'Updated existing context.' });
-  } else {
-    // Create new file
-    fs.writeFileSync(filePath, content);
-    appResponse.json({ status: 'Created new person context.' });
+      
+      fs.appendFileSync(filePath, appendContent);
+      console.log("Updated context file:", filePath);
+      appResponse.json({ status: 'Updated existing context.' });
+    } else {
+      // Create new file
+      fs.writeFileSync(filePath, content);
+      console.log("Created new context file:", filePath);
+      appResponse.json({ status: 'Created new person context.' });
+    }
+  } catch (error) {
+    console.error("Bridge POST Error:", error);
+    appResponse.status(500).json({ error: error.message });
   }
 });
 
