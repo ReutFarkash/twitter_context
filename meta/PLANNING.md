@@ -13,11 +13,16 @@ Goal: A browser extension that can send tweet data to a local endpoint which cre
 - [ ] **Vault Integration:** Best way to append to a Markdown list via script.
 - [ ] **Chrome Extension Permissions:** `nativeMessaging` vs. `fetch` to localhost.
 
-## 🚀 Phase 2: Visual Indicators
-Goal: Surface saved context back onto Twitter.
-- Inject an emoji next to handles that have an existing file in the vault.
-- Color-code handles based on `category`.
+## 🚀 Phase 2: Visual Indicators & Interaction
+Goal: Surface saved context back onto Twitter with minimal interface.
+- [x] Inject an emoji next to handles that have an existing file in the vault.
+- [x] Color-code handles based on `category`.
+- [ ] **Minimal Interface (Bookmark Style):**
+    - [ ] Add a "Quick Menu" or +/- buttons directly in the tweet UI.
+    - [ ] **Category Buttons:** Simple buttons for [Funny/Sweet, Racist, Tech, Useful].
+    - [ ] **Aggregation:** Implement logic to derive a "Minimal Representation" (e.g., a specific emoji combination) based on the sum of these interactions.
+    - [ ] **Manual Override:** Ensure categories can still be manually changed.
 
-## 🚀 Phase 3: Cloud & Sync (Future)
+## 🚀 Phase 3: Mobile & Cloud (Future)
 - Transition local bridge to a serverless function/database.
-- Mobile browser support (Kiwi/Orion) or shortcuts integration.
+- **Phone Integration:** Research ways to run this on mobile browsers (Kiwi/Orion) or via a share sheet shortcut.
