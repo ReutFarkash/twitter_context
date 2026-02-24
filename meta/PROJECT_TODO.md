@@ -5,17 +5,23 @@
 - [x] Create `meta/` directory structure.
 - [x] Define `GEMINI.md` vision.
 - [x] Set up `SESSION_CONFIG.md`.
-- [ ] **Create Extension Scaffold:**
-    - [ ] `manifest.json` (v3).
-    - [ ] `content.js` (empty).
-    - [ ] `background.js` (empty).
-- [ ] **Create Local Bridge Scaffold:**
-    - [ ] Simple Express or FastAPI server.
+- [x] **Create Extension Scaffold:**
+    - [x] `manifest.json` (v3).
+    - [x] `content.js`.
+    - [x] `background.js`.
+- [x] **Create Local Bridge Scaffold:**
+    - [x] Simple Express server.
 
-## 🎯 Sprint 2: Scraper Development
-- [ ] Identify tweet container selectors.
-- [ ] Extract username, handle, and text via script.
-- [ ] Implement button injection logic.
+## 🎯 Sprint 2: Capture Loop
+- [x] Identify tweet container selectors.
+- [x] Extract username, handle, and text via script.
+- [x] Implement button injection logic.
+- [x] Bypass CORS via background relay.
+
+## 🎯 Sprint 3: Visual Indicators
+- [x] Implement `GET /check/:handle` in bridge.
+- [x] Implement handle scanning in extension.
+- [x] Inject emoji badges (🔴🟢🟡) next to usernames.
 
 ## 💡 Ideas
 - [ ] Use `nativeMessaging` for more robust local file access from the extension.
