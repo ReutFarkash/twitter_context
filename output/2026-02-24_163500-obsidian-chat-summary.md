@@ -17,6 +17,7 @@ Initialized and implemented the first functional version of the **Twitter Contex
 - **Bridge Server:** Built a Node.js Express server to handle file I/O, allowing the extension to write and read from the Obsidian vault.
 - **CORS Mitigation:** Implemented a background relay architecture to bypass browser security restrictions on localhost communication.
 - **Visual Feedback:** Added real-time handle scanning that injects status emojis (🔴🟢🟡) into the Twitter UI based on vault records.
+- **Tagging Standardization:** Formally documented and reinforced the `YYYY-MM-DD_HHMMSS-description` session tagging standard in the project's engineering standards (v1.8).
 
 ## 🛠️ Technical Implementation Details
 - **Repo:** `git@github.com:ReutFarkash/twitter_context.git`
@@ -26,7 +27,7 @@ Initialized and implemented the first functional version of the **Twitter Contex
 
 ## 📍 Status & Handoff
 - **Status:** **Phase 1 MVP Complete.**
-- **GitHub:** `c6de095` (Pushed).
+- **GitHub:** `4ac4bdf` (Pushed).
 - **Latest State:** All core features (Capture + Badge) are verified working.
 
 ---
